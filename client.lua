@@ -26,6 +26,8 @@ Citizen.CreateThread(function()
 end)
 
 Citizen.CreateThread(function()
+	local bv
+
 	while true do
 		if balloon then
 			balloonPrompts:handleEvents()
@@ -58,9 +60,16 @@ Citizen.CreateThread(function()
 			end
 
 			if IsControlPressed(0, `INPUT_VEH_BRAKE`) then
-				local x = v2.x > 0 and v2.x - speed or v2.x + speed
-				local y = v2.y > 0 and v2.y - speed or v2.y + speed
-				v2 = vector3(x, y, v2.z)
+				if bv then
+					local x = bv.x > 0 and bv.x - speed or bv.x + speed
+					local y = bv.y > 0 and bv.y - speed or bv.y + speed
+					v2 = vector3(x, y, v2.z)
+				end
+				bv = v2.xy
+			else
+				if bv then
+					bv = nil
+				end
 			end
 
 			if IsControlJustPressed(0, `INPUT_VEH_SHUFFLE`) then
